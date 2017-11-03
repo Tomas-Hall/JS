@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<input type="number" id="one"></input>
+<input type="number" id="two"></input>
+<input type="button" id="submit" onclick="rawr()"></input>
+<script type="text/javascript">
+function rawr()
+{
+	var blarg = parseInt(document.getElementById('one').value)+
+		parseInt(document.getElementById('two').value);
+	if(isNaN(blarg))
+		blarg = "Please input numbers";
+
+	alert(blarg);
+	
+	
+	
+	
+	//alert(document.getElementById('one').value + document.getElementById('two').value);
+};
+
+</script>
+
+</body>
+
+</html>

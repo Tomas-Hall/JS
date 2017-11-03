@@ -1,0 +1,182 @@
+<html>
+
+<body>
+    <script type="text/javascript">
+        'use strict';
+        function doubleString(string) {
+            let toReturn = "";
+
+            for (let key in string) {
+                toReturn += doubleChar(string[key]);
+            }
+
+            return toReturn;
+        }
+
+        function doubleChar(char) {
+            return char + char;
+        }
+
+        function getSandwich(string) {
+            // let toReturn = "";
+
+            //string.includes("bread");
+            let bread = "bread";
+            let breadCount = 0;
+            let toReturn = "";
+            for (let i = 0; i < string.length - bread.length; i++) {
+
+                for (let j = 0; j < bread.length; j++) {
+                    if (string[i] === bread[j]) {
+                        if (j == bread.length - 1) { breadCount++; break; }
+                        i++;
+
+                    } else {
+                        if (breadCount == 1) {
+                            if (j > 0) {
+                                for (j; j > 0; j--) { toReturn += bread[j - 1]; }
+                            }
+                            toReturn += string[i];
+                        }
+                        break;
+                    }
+                }
+
+            }
+
+            if (breadCount != 2) { toReturn = "No Sandwich"; }
+
+            return toReturn;
+
+        }
+
+        function evenlySpaced(one, two, three) {
+            let arr = [one, two, three];
+            let answer = 0;
+            let small = 1000;
+            let medium = 0;
+            let large = 0;
+
+            for (let key in arr) {
+                if (arr[key] > large) { large = arr[key]; }
+                if (arr[key] < small) { small = arr[key]; }
+
+            }
+            for (let key in arr) {
+                if (arr[key] != large && arr[key] != small) {
+                    medium = arr[key];
+                }
+            }
+
+            if (Math.abs(large - medium) == Math.abs(medium - small)) { return true; }
+            else { return false; }
+        }
+        function nTwice(string, number) {
+            let toReturn = "";
+            if (number > string.length) { return string; }
+            toReturn += string.substring(0, number);
+            toReturn += string.substring(string.length - number, string.length);
+
+            return toReturn;
+        }
+
+        function endsLy(string) {
+            if (string.endsWith('ly')) { return true; }
+
+            return false;
+        }
+
+        function stringClean(string, pos) {
+            // char array
+            // peek next, if same trim
+            // else increment
+            if (string.length - 1 > pos) {
+                if (string[pos] === string[pos + 1]) {
+
+                }
+                pos++
+                stringClean(string, pos);
+            }
+
+            return string;
+        }
+
+        function fibonacci(n) {
+            if (n == 1) { return 1; }
+            if (n == 0) { return 0; }
+
+            return fibonacci(n - 1) + fibonacci(n - 2);
+        }
+
+        function bunnyEars(number) {
+            return number + number;    
+        }
+
+        function entry() {
+            let task1Result = doubleString(document.getElementById("task1").value);
+            console.log(task1Result);
+
+            let task2Result = getSandwich(document.getElementById("task2").value);
+            console.log(task2Result);
+
+            let one = document.getElementById("task3one").value;
+            let two = document.getElementById("task3two").value;
+            let three = document.getElementById("task3three").value;
+            let task3Result = evenlySpaced(one, two, three);
+            console.log(task3Result);
+
+            let string = document.getElementById("task4String").value;
+            let number = document.getElementById("task4Num").value;
+            let task4Result = nTwice(string, number);
+            console.log(task4Result);
+
+            string = document.getElementById("task5String").value;
+            let task5Result = endsLy(string);
+            console.log(task5Result);
+
+            string = document.getElementById("task6String").value;
+            let task6Result = stringClean(string);
+            console.log(task6Result);
+
+            number = document.getElementById("task7Num").value;
+            if (number < 1) {
+                console.log("insert a higher number for task 7");
+            } else {
+                let task7Result = fibonacci(number - 1);
+                console.log(task7Result);
+            }
+        }
+    </script>
+    <input type="button" onclick="entry()" value="click for tasks"></input>
+    <div>
+        task1 string: <input type="text" id="task1"></input>
+
+    </div>
+    <div>
+        task2 string: <input type="text" id="task2"></input>
+
+    </div>
+    <div>
+        task3 numbers: <input type="number" id="task3one"></input>
+        <input type="number" id="task3two"></input>
+        <input type="number" id="task3three"></input>
+    </div>
+    <div>
+        <input type="text" id="task4String"></input>
+        <input type="number" id="task4Num"></input>
+
+    </div>
+    <div>
+        <input type="text" id="task5String"></input>
+
+
+    </div>
+    <div>
+        <input type="text" id="task6String"></input>
+    </div>
+    <div>
+        <input type="number" id="task7Num"></input>
+    </div>
+</body>
+
+</html>
