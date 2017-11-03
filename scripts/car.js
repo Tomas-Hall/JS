@@ -4,6 +4,7 @@
 
 // objects contain a number of key value pairs
 
+
 const ageCost = 0.1; // age is a cost multipler
 const faultCost = 20; // 20 quid because why not 
 const carVars = ["type", "age", "faults", "checkedIn"]; // here we can set the naming convention of the car vars
@@ -27,8 +28,20 @@ function car(type = "none", age = 0, faults = 0, checkedIn = false) {
 }
 function addCar(license, car) {
     // license is the key, car is the value
-    carDict.push(returnKvp(license, car));
+    if (carDict.length == 0) { carDict.push(returnKvp(license, car)); }
+    for (let i in carDict) {
+        if (carDict[i].key == license) { carDict[i].value = car; break; }
+        else { carDict.push(returnKvp(license, car)); break; }
+    }
 }
+function addCarFromWebPage() {
+    let plate = document.getElementById("lPlate").value;
+    let type = document.getElementById("cType").value;
+    let age = document.getElementById("age").value;
+    addCar(plate, car(type, age));
+    console.log(carDict[0]);
+}
+
 // task 1 and 2 check in/out cars
 function setStatus(license, status) {
     for (let i in carDict) {
@@ -48,11 +61,13 @@ function setStatus(license, status) {
 */
 
 // task 3 print checked in cars
-function garageContents() {
+function garageContents(requestedStatus) {
     let toReturn = [];
     for (let i in carDict) {
         let kvp = carDict[i];
-        if (kvp.value[carVars[3]]) { toReturn.push(kvp); }
+        if (kvp.value[carVars[3]] == requestedStatus) {
+            toReturn.push(kvp);
+        }
     }
     return toReturn;
 }
@@ -88,3 +103,22 @@ console.log(calculateBill(carDict[0].value));
 let aTest = test();
 console.log(aTest.hello);
 */
+
+function findCar(license) {
+    for (let i in carDict) {
+        let kvp = carDict[i];
+        if (kvp.key == license) { return kvp; }
+    }
+
+    return null;
+}
+
+
+addCar("na", car(undefined, undefined, undefined, true));
+addCar("rawr", car());
+addCar("uwot", car("m9", 0, 1, true));
+addCar("meow", car("Siamese", 0, 3, true));
+addCar("woof", car("grey hound", 0, 2400, true));
+addCar("dev", car("", 0, 0, true));
+addCar("QinetiQ", car("defence", 0, 5, true));
+addCar("ohno", car("", 0, 2, false));

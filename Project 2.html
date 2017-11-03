@@ -1,121 +1,98 @@
 <!DOCTYPE html>
 <html>
+<link href="css/styles.css" rel="stylesheet">
 
-<body>
-<div>
-<input type="button" id="submit" onclick="stringFour()"></input>
-<br></br>
-<form oninput="result.value=fizz()">
-<input type="number" id="one"></input>
-<br></br>
-<input type="text" id="tone"></input>
-<br></br>
-<input type="text" id="ttwo"></input>
-<br></br>
-<output name="result"></output>
-</form>
-<input type="text" id="tthree"></input>
-</div>
-<div id="dom1" style="margin: 16px; padding-top: 50px; text-align: center-left;">
-Challenges from <strong>DOM</strong> onwards
-<br></br>
-<input type="button" id="createPara" onclick="para()" value="create a paragraph"></input>
-<br></br>
-<input type="text" id="paraText"></input>
-<input type="button" id="editPara" onclick="editPara()" value="change a paragraph"></input>
-</div>
-<script type="text/javascript">
-function rawr()
-{
-	let mBlarg = parseInt(document.getElementById('one').value);
-	let arr = [ mBlarg ];
-	while (mBlarg > 1)
-	{
-		if(Number.isInteger(mBlarg/3))
-		mBlarg /= 3;
-		else
-		mBlarg += 1;
+<body id="content">
+	<div>
+		<input type="button" id="submit" onclick="stringFour()" value="fizzbuzz"></input>
+		<br></br>
+		<form oninput="result.value=fizz()">
+			<input type="number" id="one"></input>
+			<br></br>
+			<input type="text" id="tone"></input>
+			<br></br>
+			<input type="text" id="ttwo"></input>
+			<br></br>
+			<output name="result"></output>
+		</form>
+		<input type="text" id="tthree"></input>
+	</div>
+	<div id="dom1" style="margin: 16px; padding-top: 50px; text-align: center-left;">
+		Challenges from <strong>DOM</strong> onwards
+		<br></br>
+		<input type="button" id="createPara" onclick="para()" value="create a paragraph"></input>
+		<br></br>
+		<input type="text" id="paraText"></input>
+		<input type="button" id="editPara" onclick="editPara()" value="change a paragraph"></input>
+	</div>
+	<script type="text/javascript">
 		
-		arr.push(mBlarg);
-		
-	}
+		function fizz() {
+			let mBla = parseInt(document.getElementById('one').value);
+			let tone = document.getElementById('tone').value;
+			let ttwo = document.getElementById('ttwo').value;
+			let mBlarg = 1;
+			let mStr = "";
+			let arr = [];
 
-	console.table(arr);
-};
-function fizz()
-{
-	let mBla = parseInt(document.getElementById('one').value); 
-	let tone = document.getElementById('tone').value;
-	let ttwo = document.getElementById('ttwo').value;
-	let mBlarg = 1;
-	let mStr = "";
-	let arr = [];
-	
-	for(mBlarg; mBlarg <= mBla; mBlarg++)
-	{
-		if(mBlarg % 15 == 0)
-			mStr = tone + ttwo;
-		else if (mBlarg % 5 == 0)
-			mStr = ttwo;
-			else if (mBlarg % 3 == 0)
-			mStr = tone;
-			else mStr = mBlarg;
-			
+			for (mBlarg; mBlarg <= mBla; mBlarg++) {
+				if (mBlarg % 15 == 0)
+					mStr = tone + ttwo;
+				else if (mBlarg % 5 == 0)
+					mStr = ttwo;
+				else if (mBlarg % 3 == 0)
+					mStr = tone;
+				else mStr = mBlarg;
 
-		arr.push(mStr);
-	}
-	
-	return arr;
-};
-function stringFour()
-{
-	let strIn = document.getElementById('tthree').value;
-	let strArr = strIn.split("");
-	
-	let triples = 0;
-	let i = 0;
-	let count = 0;
-	let last = "";
-	for(i; i < strArr.length; i++)
-	{
-		if(last !== strArr[i])
-		{
-			last = strArr[i];
-			count = 1;
+
+				arr.push(mStr);
+			}
+
+			return arr;
+		};
+		function stringFour() {
+			let strIn = document.getElementById('tthree').value;
+			let strArr = strIn.split("");
+
+			let triples = 0;
+			let i = 0;
+			let count = 0;
+			let last = "";
+			for (i; i < strArr.length; i++) {
+				if (last !== strArr[i]) {
+					last = strArr[i];
+					count = 1;
+				}
+				else
+					count++;
+
+				if (count >= 3) {
+					triples++;
+					last = "";
+				}
+			}
+
+			alert(triples);
 		}
-		else
-			count++;
-		
-		if(count >= 3)
-		{
-			triples++;
-			last = "";
+
+		function para() {
+			let para = document.createElement("p");
+			let node = document.createTextNode("This is the default text.");
+
+			para.appendChild(node);
+			para.id = "rawr";
+			let element = document.getElementById("dom1");
+			element.appendChild(para);
 		}
-	}
-	
-	alert(triples);
-}
+		function editPara() {
+			let para = document.getElementById("rawr");
 
-function para()
-{
-	let para = document.createElement("p");
-	let node = document.createTextNode("This is the default text.");
-	
-	para.appendChild(node);
-	para.id = "rawr";
-	let element = document.getElementById("dom1");
-	element.appendChild(para);
-}
-function editPara()
-{
-	let para = document.getElementById("rawr");
-	
-	para.innerHTML = document.getElementById("paraText").value;
-	return ;
-}
+			para.innerHTML = document.getElementById("paraText").value;
+			return;
+		}
 
-</script>
-<p></p>
+	</script>
+	<p></p>
 </body>
 
 </html>

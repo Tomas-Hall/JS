@@ -1,7 +1,8 @@
 <html>
-<meta charset="utf-8"/>
+<meta charset="utf-8" />
 <script type="text/javascript" src="scripts/car.js"></script>
-<script type="text/javascript" src="scripts/test.js"></script>
+<link href="css/styles.css" rel="stylesheet">
+
 
 <script type="text/javascript">
     // now we have to use the functions from car.js
@@ -17,37 +18,153 @@
     give up on the get requests on form just hard code using document.getElementById()
 
 
+
     */
+
+    function check(param1, param2, outputLoc) {
+        let responseString = "";
+        let aCar = findCar(param2);
+        let param1Test = (param1 == "in" || param1 == "out");
+        let param2Test = aCar != null
+        let param1Conv;
+        if (!param1Test) {
+            // then you cant shake it all about
+            responseString += "param1 must be \"in\" or \"out\" <br>";
+        } else {
+            switch (param1) {
+                case "in":
+                    param1Conv = true;
+                    break;
+                case "out":
+                    param1Conv = false;
+                    break;
+            }
+        }
+        if (!param2Test) {
+            responseString += "param2 must be a valid license number <br>";
+        }
+        if (param1Test && param2Test) {
+            // actually check in or out the thing
+            setStatus(aCar.key, param1Conv);
+            responseString += `successfully checked ${aCar.key} ${param1}`;
+        }
+        console.log(aCar);
+        outputLoc.innerHTML = responseString;
+    }
+    function output(outputLoc) {
+        // return all checked in
+        writeCars(garageContents(true), outputLoc);
+    }
+    function create(params, outputLoc) {
+
+        addCar(params[0], car(params[1], params[2], params[3], params[4]));
+        outputLoc.innerHTML = `You have added a new car with the following details <br> License: ${params[0]}, ${carVars[0]}: ${params[1]}, ${carVars[1]}: ${params[2]}, ${carVars[2]}: ${params[3]}, ${carVars[3]}: ${params[4]}`
+    }
+
+    function writeCars(carList, outputLoc) {
+        let table = document.createElement('table');
+        let rowRowFightThePower = document.createElement('tr');
+
+        rowRowFightThePower.innerHTML += "<td>" + "License" + "</td>";
+        for (let i in carVars) {
+            rowRowFightThePower.innerHTML += "<td>" + carVars[i] + "</td>";
+        }
+        table.appendChild(rowRowFightThePower);
+        rowRowFightThePower = document.createElement('tr');
+        for (let i in carList) {
+            let kvp = carList[i];
+            rowRowFightThePower.innerHTML += "<td>" + kvp.key + "</td>";
+            for (let j in carVars) {
+                rowRowFightThePower.innerHTML += "<td>" + kvp.value[carVars[j]] + "</td>";
+
+            }
+            table.appendChild(rowRowFightThePower);
+            rowRowFightThePower = document.createElement('tr');
+        }
+        outputLoc.innerHTML = "";
+        outputLoc.appendChild(table);
+
+    }
+
+    function parseAdminInput() {
+        let admin = document.getElementById("admin");
+        let response = document.getElementById("aResponse");
+        let arr = admin.value.split(" ");
+        switch (arr[0]) {
+            case "check":
+                check(arr[1], arr[2], response);
+                break;
+            case "output": // an output command
+                output(response);
+                break;
+            case "create": // a create command
+                // check arr length
+                let newArr = [];
+                for (let i in arr) {
+                    if (i != 0) {
+                        newArr.push(arr[i]);
+                    }
+                }
+                if (newArr.length < 5) {
+                    for (let i = newArr.length; i < 5; i++) {
+                        newArr[i] = undefined;
+                    }
+                }
+                create(newArr, response);
+                break;
+            case "status":
+
+                break;
+            default:
+                response.innerHTML = "Please enter a valid command.";
+                break;
+        }
+    }
+
 </script>
 
 <body>
-    <div>
-        <h1>Garage entry form</h1>
-        <form method="GET">
-            <section>   
-                <p>
-                    <label for "name">
-                        <span>Name: </span>
-                    <input type="text" name="name" id="name"></input>
-                </label>
-                </p>
 
-                <p>
-               
-                </p>
-                <p>
-                   
-                </p>
-                <p><button type="submit">Send details</button>
-            </section>
-        </form>
+    <div id="content">
+        <div>
+            <h1>Garage entry form</h1>
+            <form>
+                <section>
+                    <p>
+                        <label for "lPlate">
+                        <span>License Plate: </span>
+                    <input type="text" name="lPlate" id="lPlate"></input>
+                </label>
+                    </p>
+                    <p>
+                        <label for "cType">
+                        <span>Type of car: </span>
+                    <input type="text" name="cType" id="cType"></input>
+                </label>
+                    </p>
+                    <p>
+                        <label for "age">
+                        <span>Age of car: </span>
+                    <input type="text" name="age" id="age"></input>
+                </label>
+                    </p>
+                    <p><input type="button" value="Send details" onclick="addCarFromWebPage()"></button>
+                </section>
+            </form>
+        </div>
+        <div>
+            <h1>Admin Console</h1>
+            <input type="text" id="admin"></input>
+            <input type="button" onclick="parseAdminInput()" value="Apply command"></input>
+            <p id="aResponse"></p>
+        </div>
     </div>
-    <div>
-        <h1>Admin Console</h1>
-    </div>
+  
+    
 </body>
 
 
 
 
 </html>
+

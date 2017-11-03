@@ -1,175 +1,175 @@
 <!DOCTYPE html>
 <html>
+<link href="css/styles.css" rel="stylesheet">
 
 <body>
-<div>
-<div id="heroes">
-<input type="button" id="heroBut" onclick="heroesNeverDie()" value="Click here for hero info"></input>
-</div>
-<div>
-<table id="heroT" ></table>
+	<div id="content">
+		<div>
+			<div id="heroes">
+				<input type="button" id="heroBut" onclick="heroesNeverDie()" value="Click here for hero info"></input>
+			</div>
+			<div>
+				<table id="heroT"></table>
 
-</div>
-<div>
-<table id="memberTable"></table>
-</div>
-</div>
-<br></br>
-<div id="history">
-<div>
-<input type="text" id="kingText"></input>
-<input type="button" value="Click here to find kings" onClick="history()"></input>
-</div>
-<div>
-<table id="hist"></table>
-</div>
-</div>
+			</div>
+			<div>
+				<table id="memberTable"></table>
+			</div>
+		</div>
+		<br></br>
+		<div id="history">
+			<div>
+				<input type="text" id="kingText"></input>
+				<input type="button" value="Click here to find kings" onClick="history()"></input>
+			</div>
+			<div>
+				<table id="hist"></table>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		'use strict';
+		function heroesNeverDie() {
+			let daTable = document.getElementById("heroT"); // create a table to output the info into
+			let meTable = document.getElementById("memberTable");
+			let requestUrl = 'https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/example.json';
+			let request = new XMLHttpRequest();
+			request.open('GET', requestUrl);
+			request.responseType = 'json';
+			request.send();
 
-<script type="text/javascript">
-'use strict';
-function heroesNeverDie()
-{
-	let daTable = document.getElementById("heroT"); // create a table to output the info into
-	let meTable = document.getElementById("memberTable");
-	let requestUrl = 'https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/example.json';
-	let request = new XMLHttpRequest();
-	request.open('GET', requestUrl);
-	request.responseType = 'json';
-	request.send();
-	
-	request.onload = function() {
-		let requestData = request.response;
-		
-		let datTr = document.createElement("tr");
-		let datTh = document.createElement("tr"); 
-		
-		if(daTable.rows.length > 0) {
-			while(daTable.rows[0]) daTable.deleteRow(0);
-		}
-		if(meTable.rows.length > 0) {
-			while(meTable.rows[0]) meTable.deleteRow(0);
-		}
-		
-		let memberArray;
-					
-		for(let key in requestData) {
-							
-			if(!Array.isArray(requestData[key])) {
-				// if the info is not an array, add it to the dataTable		
-					
-				datTh.innerHTML += "<th>" + key + "</th>";
-				datTr.innerHTML += "<td>" + requestData[key] + "</td>";
-			}
-			else { memberArray = requestData[key]; } // add it to the member table
-				
-		}
-		
-		daTable.appendChild(datTh);
-		daTable.appendChild(datTr);
-	
-		datTh = document.createElement("tr");
-		
-		for(let key in memberArray[0]) {
-			datTh.innerHTML += "<th>" + key + "</th>";	
-		}
-			meTable.appendChild(datTh);
-		
-		for(let i in memberArray) {
-				datTr = document.createElement("tr");
-				for(let j in memberArray[i]) {
-				
-					if(!Array.isArray(memberArray[i][j])) {
-				// if the info is not an array, add it to the dataTable
-					
-				
-					datTr.innerHTML += "<td>" + memberArray[i][j] + "</td>";
-					} else {
-						let tempStr = "";
-						for(let k in memberArray[i][j]) {
-							if(k == 0) {tempStr += memberArray[i][j][k];  }
-							else { tempStr +=  ", " + memberArray[i][j][k]; }
-							
-							
-						}
-						datTr.innerHTML += "<td>" + tempStr + "</td>";
-					}
-			
+			request.onload = function () {
+				let requestData = request.response;
+
+				let datTr = document.createElement("tr");
+				let datTh = document.createElement("tr");
+
+				if (daTable.rows.length > 0) {
+					while (daTable.rows[0]) daTable.deleteRow(0);
 				}
-				
-				meTable.appendChild(datTr);
-		}
-	
-		meTable.appendChild(datTr);
-
-	
-	}
-	
-	
-	
-	
-	
-}
-function history()
-{
-	let hisTable = document.getElementById('hist');
-	
-	let datTh = document.createElement('tr');
-	let datTr = document.createElement('tr');
-	
-	let requestUrl = 'https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/kings.json';
-	let request = new XMLHttpRequest();
-	request.open('GET', requestUrl);
-	request.responseType = 'json';
-	request.send();
-	
-	request.onload = function() {
-		let requestData = request.response;
-		
-		// Clear the table
-		if(hisTable.rows.length > 0) {
-			while(hisTable.rows[0]) hisTable.deleteRow(0);
-		}
-		
-		let inputStr = document.getElementById('kingText');
-			
-			for(let i in requestData[0]) {
-				datTh.innerHTML += "<th>" + i + "</th>";
-			}
-			hisTable.appendChild(datTh);
-			
-			let toAdd = false;
-			
-			
-			for(let i in requestData) {
-				// for each object in the array
-				for(let j in requestData[i]) {
-					// look through to determine if there is a match.
-					// if there is then you will need to loop through again and append to the list
-					
-					if(requestData[i][j].toUpperCase().includes(inputStr.value.toUpperCase())) {
-						toAdd = true;
-						
-						break;
-					}
-					
+				if (meTable.rows.length > 0) {
+					while (meTable.rows[0]) meTable.deleteRow(0);
 				}
-				if(toAdd) {
-					for(let j in requestData[i]) {
-					
-					
-						datTr.innerHTML += "<td>" + requestData[i][j] + "</td>";
+
+				let memberArray;
+
+				for (let key in requestData) {
+
+					if (!Array.isArray(requestData[key])) {
+						// if the info is not an array, add it to the dataTable		
+
+						datTh.innerHTML += "<th>" + key + "</th>";
+						datTr.innerHTML += "<td>" + requestData[key] + "</td>";
 					}
-					toAdd = false;
-					hisTable.appendChild(datTr);
+					else { memberArray = requestData[key]; } // add it to the member table
+
+				}
+
+				daTable.appendChild(datTh);
+				daTable.appendChild(datTr);
+
+				datTh = document.createElement("tr");
+
+				for (let key in memberArray[0]) {
+					datTh.innerHTML += "<th>" + key + "</th>";
+				}
+				meTable.appendChild(datTh);
+
+				for (let i in memberArray) {
 					datTr = document.createElement("tr");
+					for (let j in memberArray[i]) {
+
+						if (!Array.isArray(memberArray[i][j])) {
+							// if the info is not an array, add it to the dataTable
+
+
+							datTr.innerHTML += "<td>" + memberArray[i][j] + "</td>";
+						} else {
+							let tempStr = "";
+							for (let k in memberArray[i][j]) {
+								if (k == 0) { tempStr += memberArray[i][j][k]; }
+								else { tempStr += ", " + memberArray[i][j][k]; }
+
+
+							}
+							datTr.innerHTML += "<td>" + tempStr + "</td>";
+						}
+
+					}
+
+					meTable.appendChild(datTr);
 				}
-				
-				
+
+				meTable.appendChild(datTr);
+
+
 			}
-		
+
+
+
+
+
 		}
-}
-</script>
+		function history() {
+			let hisTable = document.getElementById('hist');
+
+			let datTh = document.createElement('tr');
+			let datTr = document.createElement('tr');
+
+			let requestUrl = 'https://raw.githubusercontent.com/ewomackQA/JSONDataRepo/master/kings.json';
+			let request = new XMLHttpRequest();
+			request.open('GET', requestUrl);
+			request.responseType = 'json';
+			request.send();
+
+			request.onload = function () {
+				let requestData = request.response;
+
+				// Clear the table
+				if (hisTable.rows.length > 0) {
+					while (hisTable.rows[0]) hisTable.deleteRow(0);
+				}
+
+				let inputStr = document.getElementById('kingText');
+
+				for (let i in requestData[0]) {
+					datTh.innerHTML += "<th>" + i + "</th>";
+				}
+				hisTable.appendChild(datTh);
+
+				let toAdd = false;
+
+
+				for (let i in requestData) {
+					// for each object in the array
+					for (let j in requestData[i]) {
+						// look through to determine if there is a match.
+						// if there is then you will need to loop through again and append to the list
+
+						if (requestData[i][j].toUpperCase().includes(inputStr.value.toUpperCase())) {
+							toAdd = true;
+
+							break;
+						}
+
+					}
+					if (toAdd) {
+						for (let j in requestData[i]) {
+
+
+							datTr.innerHTML += "<td>" + requestData[i][j] + "</td>";
+						}
+						toAdd = false;
+						hisTable.appendChild(datTr);
+						datTr = document.createElement("tr");
+					}
+
+
+				}
+
+			}
+		}
+	</script>
 
 </body>
 
